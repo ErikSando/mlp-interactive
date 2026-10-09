@@ -1,0 +1,15 @@
+body {
+    padding: 0;
+    margin: auto;
+}
+
+#canvas {
+    width: min(70vw, 70vh);
+    height: min(70vw, 70vh);
+    margin: auto;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 1vh;
+    /* bottom: 0; */
+}
