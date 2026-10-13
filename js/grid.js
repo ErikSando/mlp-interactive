@@ -12,9 +12,13 @@ class Grid {
         this.#height = height;
         this.#data = new Array(width * height);
 
-        for (let tile of this.#data) {
-            tile = 0;
+        for (let i = 0; i < this.#data.length; i++) {
+            this.#data[i] = 0;
         }
+    }
+
+    drawAt(x, y) {
+        
     }
 
     draw(ctx) {
