@@ -1,8 +1,9 @@
 class Layer {
-    constructor(nodeCount, previousCount, batchSize, activation) {
+    constructor(nodeCount, previousCount, batchSize, activation = x => x) {
         this.logits = new Matrix(batchSize, nodeCount);
         this.activations = new Matrix(batchSize, nodeCount);
         this.weights = new Matrix(previousCount, nodeCount);
         this.biases = new Vector(nodeCount);
+        this.activation = activation;
     }
 }

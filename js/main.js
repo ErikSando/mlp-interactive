@@ -4,6 +4,9 @@ window.addEventListener("load", () => {
 
     canvas.addEventListener("contextmenu", e => e.preventDefault());
 
+    const gridCheckbox = document.getElementById("show-grid")
+    const gridColourPicker = document.getElementById("grid-colour")
+
     const nativeW = 1000;
     const nativeH = 1000;
 
@@ -22,15 +25,36 @@ window.addEventListener("load", () => {
     window.addEventListener("resize", resize);
     resize();
 
-    const grid = new Grid(28, 28);
+    const grid = new Grid(28, 28, gridCheckbox, gridColourPicker);
     const input = new InputHandler(canvas);
 
+    mouse1Down = false;
+    mouse2Down = false;
+
     input.mouse1Down.addHandler(() => {
-        console.log("mouse 1 down");
+        mouse1Down = true;
+        pos = input.getMousePosition();
+        grid.drawAt(pos.x, pos.y);
     });
 
     input.mouse2Down.addHandler(() => {
-        console.log("mouse 2 down");
+        mouse2Down = true;
+        pos = input.getMousePosition();
+        grid.eraseAt(pos.x, pos.y);
+    });
+
+    input.mouse1Up.addHandler(() => {
+        mouse1Down = false;
+    });
+
+    input.mouse2Up.addHandler(() => {
+        mouse2Down = false;
+    });
+
+    input.mouseMove.addHandler(() => {
+        pos = input.getMousePosition();
+        if (mouse1Down) grid.drawAt(pos.x, pos.y);
+        if (mouse2Down) grid.drawAt(pos.x, pos.y, true);
     });
 
     function update(timestamp) {
@@ -42,8 +66,9 @@ window.addEventListener("load", () => {
     }
 
     function draw() {
+        ctx.globalAlpha = 1;
         ctx.fillStyle = "black";
-        ctx.fillRect(-1, -1, nativeW, nativeH);
+        ctx.fillRect(0, 0, nativeW, nativeH);
 
         grid.draw(ctx);
     }
