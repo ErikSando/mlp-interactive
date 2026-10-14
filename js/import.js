@@ -20,15 +20,15 @@ function importModel(info) {
         layer_sizes[i] = Number(layer_sizes[i]);
 
         if (isNaN(layer_sizes[i])) {
-            console.error("Invalid layer size");
-            return;
+            // console.error("Invalid layer size");
+            return { mlp: null, err: "NaN layer size" }
         }
     }
 
     if (layer_sizes.length < 2) {
         // return some error thing handled by the caller which displays the error on the html page
         console.error("Insufficient number of layers");
-        return;
+        return { mlp: null, err: "Insufficient number of layers" }
     }
 
     let activation_functions = lines[1].split(" ");
@@ -45,14 +45,11 @@ function importModel(info) {
     // console.log(lines);
 
     if (4 + (layer_sizes.length - 1) * 2 >= lines.length) {
-        console.error("Missing weights/biases");
-        return;
+        // console.error("Missing weights/biases");
+        return { mlp: null, err: "Missing weights/biases" }
     }
 
     for (let i = 0; i < layer_sizes.length - 1; i++) {
-        console.log(5 + i * 2);
-        console.log(5 + i * 2 + 1);
-
         weights.push(lines[5 + i * 2].split(" "));
         biases.push(lines[5 + i * 2 + 1].split(" "));
     }
@@ -76,15 +73,12 @@ function importModel(info) {
         let layer_size = layer_sizes[i];
         let layer = new Layer(layer_size, previous_size, 1, HiddenActivations[hidden_activation]);
 
-        console.log("no. weights: " + weights[i - 1].length);
-        console.log("no. biases: " + biases[i - 1].length);
-        console.log(previous_size * layer_size);
-
         for (let j = 0; j < previous_size * layer_size; j++) {
             layer.weights.data[j] = Number(weights[i - 1][j]);
 
             if (isNaN(layer.weights.data[j])) {
                 console.log("NaN weight: " + weights[i - 1][j]);
+                return { mlp: null, err: "NaN weight at index " + j }
             }
         }
 
@@ -93,6 +87,7 @@ function importModel(info) {
 
             if (isNaN(layer.biases.data[j])) {
                 console.log("NaN bias: " + biases[i - 1][j]);
+                return { mlp: null, err: "NaN bias at index " + j }
             }
         }
 
@@ -114,5 +109,5 @@ function importModel(info) {
 
     layers.push(output_layer);
 
-    return new MLP(layers, loss);
+    return { mlp: new MLP(layers, loss), err: null }
 }

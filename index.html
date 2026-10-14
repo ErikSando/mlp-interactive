@@ -20,18 +20,24 @@
     </head>
     <body>
         <canvas id="canvas"></canvas>
-        <button id="import">Import Model</button>
-        <input type="file" id="file-input" accept="" >
-        <div id="options">
-            <b>Options</b> <br>
-            Label: <input type="number" id="label"> <br>
-            Grid lines: <input id="show-grid" type="checkbox" checked="true"> Colour: <input id="grid-colour" type="color" value="#ddeeff">
-        </div>
-        <div id="model">
-            <b>Model Output</b> <br>
-            <button id="classify">Classify</button> <br>
-            Classification: <span id="class">...</span> <br>
-            Loss: <span id="loss">...</span>
+        <div id="settings">
+            <button id="import">Import Model</button> <br>
+            <input type="file" id="file-input" accept="" style="display: none;">
+            <br>
+            <div id="options">
+                <h3>Options</h3>
+                Label: <input type="number" id="label"> <br>
+                Grid lines: <input id="show-grid" type="checkbox" checked="true">
+                Colour: <input id="grid-colour" type="color" value="#ddeeff"> <br>
+                <button id="clear">Clear</button>
+            </div> <br>
+            <div id="model">
+                <h3>Model Output</h3>
+                <button id="classify">Classify</button> <br>
+                Classification: <span id="class">...</span> <br>
+                Loss: <span id="loss">...</span> <br> <br>
+                <span id="error"></span>
+            </div>
         </div>
     </body>
 </html>

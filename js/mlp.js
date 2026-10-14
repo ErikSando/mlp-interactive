@@ -76,9 +76,6 @@ class MLP {
 
     getClassification() {
         let outputs = this.layers[this.layers.length - 1].activations.data;
-        console.log(this.layers[this.layers.length - 1]);
-        console.log(this.layers[this.layers.length - 1].activations);
-        console.log(outputs);
         let max = 0;
         let classification = -1;
 

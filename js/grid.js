@@ -34,6 +34,12 @@ class Grid {
         }
     }
 
+    clear = () => {
+        for (let i = 0; i < this.#data.length; i++) {
+            this.#data[i] = 0;
+        }
+    }
+
     getData() {
         let data = [];
 
@@ -48,10 +54,10 @@ class Grid {
         if (this.#lastPos && Vector2.distanceBetween(this.#lastPos, new Vector2(x, y)) < this.threshold) return;
         this.#lastPos = new Vector2(x, y);
 
-        let row = Math.floor(this.#height * y / 1000);
-        let col = Math.floor(this.#width * x / 1000);
+        // let row = Math.floor(this.#height * y / 1000);
+        // let col = Math.floor(this.#width * x / 1000);
 
-        if (row >= this.#height || col >= this.#width) return;
+        // if (row >= this.#height || col >= this.#width) return;
 
         let sign = negate ? -1 : 1;
 

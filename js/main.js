@@ -17,6 +17,21 @@ window.addEventListener("load", () => {
     const classElement = document.getElementById("class");
     const lossElement = document.getElementById("loss");
 
+    const errorText = document.getElementById("error");
+    errorCounter = 0;
+
+    function hideError() {
+        errorCounter--;
+        if (errorCounter) return;
+        errorText.textContent = "";
+    }
+
+    function error(text) {
+        errorCounter += 1
+        errorText.textContent = text;
+        setTimeout(hideError, 5000);
+    }
+
     let mlp;
 
     fileInput.addEventListener("change", (e) => {
@@ -27,8 +42,12 @@ window.addEventListener("load", () => {
 
         const reader = new FileReader();
 
+        let err;
+
         reader.addEventListener("load", (e) => {
-            mlp = importModel(e.target.result);
+            ({ mlp, err } = importModel(e.target.result));
+
+            if (err) error(err);
         });
 
         reader.readAsText(file, "UTF-8");
@@ -54,6 +73,8 @@ window.addEventListener("load", () => {
 
     const grid = new Grid(28, 28, gridCheckbox, gridColourPicker);
     const input = new InputHandler(canvas);
+
+    document.getElementById("clear").addEventListener("click", grid.clear);
 
     let mouse1Down = false;
     let mouse2Down = false;
@@ -85,7 +106,10 @@ window.addEventListener("load", () => {
     });
 
     classifyButton.addEventListener("click", () => {
-        if (!mlp) return;
+        if (!mlp) {
+            error("No model has been loaded");
+            return;
+        }
 
         mlp.forwardPass(grid.getData());
 

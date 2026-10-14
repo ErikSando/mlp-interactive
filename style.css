@@ -1,15 +1,47 @@
 body {
     padding: 0;
     margin: auto;
+    font-size: large;
+    background: rgb(0, 30, 60);
+    color: white;
+}
+
+button {
+    font-size: larger;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+input {
+    margin-bottom: 5px;
+    margin-top: 5px;
+    font-size: large;
+    ;
+}
+
+input[type="checkbox"] {
+    transform: scale(1.5);
+}
+
+h3 {
+    margin-top: 0px;
+    margin-bottom: 10px;
 }
 
 #canvas {
-    width: min(70vw, 70vh);
-    height: min(70vw, 70vh);
+    width: min(70vw, 98vh);
+    height: min(70vw, 98vh);
     margin: auto;
     position: absolute;
-    left: 0;
-    right: 0;
+    right: 1vw;
     top: 1vh;
     /* bottom: 0; */
+}
+
+#settings {
+    padding: 10px;
+}
+
+#error {
+    color: red;
 }
