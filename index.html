@@ -5,12 +5,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>MLP</title>
         <link rel="stylesheet" href="style.css">
-        <script src="js/enums.js"></script>
         <script src="js/matrix.js"></script>
         <script src="js/vector.js"></script>
         <script src="js/layer.js"></script>
         <script src="js/context.js"></script>
-        <script src="js/model.js"></script>
+        <script src="js/softmax.js"></script>
+        <script src="js/mlp.js"></script>
         <script src="js/import.js"></script>
         <script src="js/event.js"></script>
         <script src="js/vector2.js"></script>
@@ -21,13 +21,15 @@
     <body>
         <canvas id="canvas"></canvas>
         <button id="import">Import Model</button>
+        <input type="file" id="file-input" accept="" >
         <div id="options">
             <b>Options</b> <br>
-            Label: <input type="number"> <br>
+            Label: <input type="number" id="label"> <br>
             Grid lines: <input id="show-grid" type="checkbox" checked="true"> Colour: <input id="grid-colour" type="color" value="#ddeeff">
         </div>
         <div id="model">
             <b>Model Output</b> <br>
+            <button id="classify">Classify</button> <br>
             Classification: <span id="class">...</span> <br>
             Loss: <span id="loss">...</span>
         </div>

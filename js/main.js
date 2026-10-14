@@ -4,8 +4,35 @@ window.addEventListener("load", () => {
 
     canvas.addEventListener("contextmenu", e => e.preventDefault());
 
-    const gridCheckbox = document.getElementById("show-grid")
-    const gridColourPicker = document.getElementById("grid-colour")
+    const gridCheckbox = document.getElementById("show-grid");
+    const gridColourPicker = document.getElementById("grid-colour");
+
+    const importButton = document.getElementById("import");
+    const fileInput = document.getElementById("file-input");
+
+    importButton.addEventListener("click", () => fileInput.click());
+
+    const classifyButton = document.getElementById("classify");
+    const labelElement = document.getElementById("label");
+    const classElement = document.getElementById("class");
+    const lossElement = document.getElementById("loss");
+
+    let mlp;
+
+    fileInput.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const filename = file.name;
+
+        const reader = new FileReader();
+
+        reader.addEventListener("load", (e) => {
+            mlp = importModel(e.target.result);
+        });
+
+        reader.readAsText(file, "UTF-8");
+    });
 
     const nativeW = 1000;
     const nativeH = 1000;
@@ -28,8 +55,8 @@ window.addEventListener("load", () => {
     const grid = new Grid(28, 28, gridCheckbox, gridColourPicker);
     const input = new InputHandler(canvas);
 
-    mouse1Down = false;
-    mouse2Down = false;
+    let mouse1Down = false;
+    let mouse2Down = false;
 
     input.mouse1Down.addHandler(() => {
         mouse1Down = true;
@@ -55,6 +82,18 @@ window.addEventListener("load", () => {
         pos = input.getMousePosition();
         if (mouse1Down) grid.drawAt(pos.x, pos.y);
         if (mouse2Down) grid.drawAt(pos.x, pos.y, true);
+    });
+
+    classifyButton.addEventListener("click", () => {
+        if (!mlp) return;
+
+        mlp.forwardPass(grid.getData());
+
+        let c = mlp.getClassification();
+        let loss = mlp.getLoss(labelElement.value);
+
+        classElement.textContent = c;
+        lossElement.textContent = loss;
     });
 
     function update(timestamp) {

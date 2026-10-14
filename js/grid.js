@@ -12,7 +12,10 @@ class Grid {
     #max = 255;
     strength = 1;
     thickness = 2;
+    threshold = 10;
     drawGrid = true;
+
+    #lastPos = null;
 
     constructor (width = 28, height = 28, checkbox = null, colourPicker = null) {
         this.init(width, height);
@@ -29,11 +32,22 @@ class Grid {
         for (let i = 0; i < this.#data.length; i++) {
             this.#data[i] = 0;
         }
+    }
 
-        console.log(this.#data);
+    getData() {
+        let data = [];
+
+        for (let value of this.#data) {
+            data.push(value / 255);
+        }
+
+        return data;
     }
 
     drawAt(x, y, negate = false) {
+        if (this.#lastPos && Vector2.distanceBetween(this.#lastPos, new Vector2(x, y)) < this.threshold) return;
+        this.#lastPos = new Vector2(x, y);
+
         let row = Math.floor(this.#height * y / 1000);
         let col = Math.floor(this.#width * x / 1000);
 
@@ -41,9 +55,18 @@ class Grid {
 
         let sign = negate ? -1 : 1;
 
+        let cellw = 1000 / this.#width;
+        let cellh = 1000 / this.#height;
+
         for (let r = 0; r < this.#height; r++) {
             for (let c = 0; c < this.#width; c++) {
-                let distance = Math.sqrt((col - (c + 0.5)) * (col - (c + 0.5)) + (row - (r + 0.5)) * (row - (r + 0.5))) / this.thickness;
+                let tileCentreX = (c + 0.5) * cellw;
+                let tileCentreY = (r + 0.5) * cellh;
+
+                let distX = x - tileCentreX;
+                let distY = y - tileCentreY;
+
+                let distance = Math.sqrt(distX * distX / (cellw * cellw) + distY * distY / (cellh * cellh)) / this.thickness;
                 distance = clamp(distance, 0, 1);
 
                 let roll_off = Math.E ** -(distance ** 2);
